@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joke Hub</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+
+<body>
+
+<div class="wrapper">
+    <h1>🤣 Joke Hub</h1>
+    <div class="card">
+        <h3 id="setup">Press the button to see a joke</h3>
+        <p id="punchline"></p>
+    </div>
+
+    <button onclick="getJoke()">New Joke</button>
+</div>
+
+<script>
+async function getJoke(){
+    const setup = document.getElementById("setup");
+    const punch = document.getElementById("punchline");
+
+    setup.innerText = "Fetching joke...";
+    punch.innerText = "";
+
+    try{
+        const response = await fetch("/joke");
+        const result = await response.json();
+
+        setup.innerText = result.setup;
+        punch.innerText = result.punchline;
+    }
+    catch(e){
+        setup.innerText = "Error loading joke.";
+    }
+}
+</script>
+
+</body>
+</html>
